@@ -38,7 +38,7 @@ test.describe('DarkChess Game', () => {
     await page.locator('.start-btn').click()
     const firstCell = page.locator('.cell').first()
     await firstCell.click()
-    await expect(page.locator('.piece--red, .piece--black')).toHaveCount({ minimum: 1 })
+    await expect(page.locator('.piece--red, .piece--black').first()).toBeVisible()
   })
 
   test('displays current turn info', async ({ page }) => {
