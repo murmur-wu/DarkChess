@@ -106,14 +106,21 @@ jobs:
           name: dist
           path: dist/
 
-      - name: Verify CLOUDFLARE_API_TOKEN is set
+      - name: Verify Cloudflare secrets are set
         run: |
+          missing=0
           if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
             echo "::error::CLOUDFLARE_API_TOKEN secret is not set or is empty. Please add it under Settings → Secrets and variables → Actions."
-            exit 1
+            missing=1
           fi
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::CLOUDFLARE_ACCOUNT_ID secret is not set or is empty. Please add it under Settings → Secrets and variables → Actions."
+            missing=1
+          fi
+          if [ "$missing" = "1" ]; then exit 1; fi
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
