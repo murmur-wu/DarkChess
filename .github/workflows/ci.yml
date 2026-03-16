@@ -106,14 +106,6 @@ jobs:
           name: dist
           path: dist/
 
-      - name: Create Cloudflare Pages project (first run only)
-        continue-on-error: true
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages project create ${{ env.CLOUDFLARE_PROJECT_NAME }} --production-branch=main
-
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
