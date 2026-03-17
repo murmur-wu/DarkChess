@@ -42,6 +42,14 @@ describe('canCapture', () => {
   it('cannon cannot use normal capture', () => {
     expect(canCapture(makePiece('red', 'cannon'), makePiece('black', 'soldier'))).toBe(false)
   })
+
+  it('horse can capture cannon', () => {
+    expect(canCapture(makePiece('red', 'horse'), makePiece('black', 'cannon'))).toBe(true)
+  })
+
+  it('soldier cannot capture cannon normally', () => {
+    expect(canCapture(makePiece('red', 'soldier'), makePiece('black', 'cannon'))).toBe(false)
+  })
 })
 
 describe('cannonCanCapture', () => {
