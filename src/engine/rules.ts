@@ -15,6 +15,9 @@ export function canCapture(attacker: Piece, target: Piece): boolean {
   // General cannot capture Soldier
   if (attacker.rank === 'general' && target.rank === 'soldier') return false
 
+  // Horse can capture Cannon (炮/包 has no defensive rank advantage)
+  if (attacker.rank === 'horse' && target.rank === 'cannon') return true
+
   const av = RANK_VALUE[attacker.rank]
   const tv = RANK_VALUE[target.rank]
 
