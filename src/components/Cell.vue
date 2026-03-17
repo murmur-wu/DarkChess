@@ -46,8 +46,8 @@ const props = withDefaults(defineProps<Props>(), {
 defineEmits<{ click: [] }>()
 
 const isFlipping = ref(false)
-// Must match the `flip-piece` keyframe animation duration (0.5s)
-const FLIP_ANIMATION_DURATION_MS = 500
+// Must match the `flip-piece` keyframe animation duration (0.55s)
+const FLIP_ANIMATION_DURATION_MS = 550
 
 watch(
   () => props.piece?.faceUp,
@@ -124,25 +124,32 @@ function getPieceSymbol(piece: Piece): string {
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 400px;
+  /* Perspective on parent gives the 3-D depth for the child's rotateX */
+  perspective: 500px;
+  perspective-origin: center 150%;
 }
 
 .piece-flipper--flipping {
-  animation: flip-piece 0.5s ease-in-out;
+  /* Pivot around the bottom edge, rising up toward the viewer */
+  transform-origin: center bottom;
+  animation: flip-piece 0.55s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes flip-piece {
+  /* Start lying flat, far side up (piece is "face-down on the table") */
   0% {
-    transform: rotateY(0deg) scale(1);
+    transform: rotateX(-110deg);
+    opacity: 0.6;
   }
-  40% {
-    transform: rotateY(90deg) scale(0.9);
+  /* Briefly overshoot past vertical for a natural "snap" feel */
+  75% {
+    transform: rotateX(12deg);
+    opacity: 1;
   }
-  60% {
-    transform: rotateY(-90deg) scale(0.9);
-  }
+  /* Settle into upright position */
   100% {
-    transform: rotateY(0deg) scale(1);
+    transform: rotateX(0deg);
+    opacity: 1;
   }
 }
 
